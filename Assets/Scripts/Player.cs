@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.UIElements;
 using UnityEngine.Tilemaps;
 
 public class Player : MonoBehaviour
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour
 	private Rigidbody2D _rb;
 	private PlayerAnimation _playerAnimation;
 	private SpriteRenderer _spriteRenderer;
+	private bool _canMove = true;
 	void Start()
 	{
 		_rb = GetComponent<Rigidbody2D>();
@@ -23,12 +25,18 @@ public class Player : MonoBehaviour
 	void Update()
 	{
 		Movement();
+		Attack();
+	}
+
+	void Attack()
+	{
+		if (Input.GetMouseButtonDown(0) && IsGrounded()) _playerAnimation.Attack();
 	}
 	void Movement()
 	{
 		float moveX = Input.GetAxisRaw("Horizontal");
 		Flip(moveX);
-		Vector2 move = new Vector2(moveX * _speed, _rb.velocity.y);
+		Vector2 move = new Vector2((_canMove ? moveX : 0) * _speed, _rb.velocity.y);
 		_rb.velocity = move;
 		_playerAnimation.Move(moveX);
 		bool _isGrounded = IsGrounded();
@@ -63,5 +71,11 @@ public class Player : MonoBehaviour
 		{
 			_spriteRenderer.flipX = false;
 		}
+	}
+
+	public bool CanMove
+	{
+		get { return _canMove; }
+		set { _canMove = value; }
 	}
 }
