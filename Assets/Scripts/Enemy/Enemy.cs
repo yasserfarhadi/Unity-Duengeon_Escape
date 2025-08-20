@@ -4,18 +4,58 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
-	[SerializeField] protected int gems, health, speed;
+	[SerializeField] protected int gems, health;
+	[SerializeField] protected float speed;
 	[SerializeField] protected Transform pointA, pointB;
 	protected Transform target;
-	protected SpriteRenderer _spriteRenderer;
-	protected Animator _spriteAnimator;
+	protected SpriteRenderer spriteRenderer;
+	protected Animator spriteAnimator;
 
-	void Awake()
+	public virtual void Init()
 	{
-		_spriteRenderer = this.gameObject.GetComponentInChildren<SpriteRenderer>();
-		_spriteAnimator = this.gameObject.GetComponentInChildren<Animator>();
+		spriteRenderer = this.gameObject.GetComponentInChildren<SpriteRenderer>();
+		spriteAnimator = this.gameObject.GetComponentInChildren<Animator>();
+		target = pointB;
 	}
 
+	public virtual void Awake()
+	{
+		Init();
+	}
+	public virtual void Update()
+	{
+		Movement();
+	}
 
-	public abstract void Update();
+	public virtual void Movement()
+	{
+		AnimatorStateInfo state = spriteAnimator.GetCurrentAnimatorStateInfo(0);
+		if (target == pointA && !state.IsName("Idle"))
+		{
+			spriteRenderer.flipX = true;
+		}
+		else if (target == pointB && !state.IsName("Idle"))
+		{
+			spriteRenderer.flipX = false;
+
+		}
+		if (state.IsName("Idle")) return;
+		transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+		if (Vector3.Distance(transform.position, target.position) < 0.1f)
+		{
+			if (target == pointA)
+			{
+				target = pointB;
+				spriteAnimator.SetTrigger("idle");
+
+			}
+			else
+			{
+				spriteAnimator.SetTrigger("idle");
+				target = pointA;
+			}
+
+
+		}
+	}
 }
