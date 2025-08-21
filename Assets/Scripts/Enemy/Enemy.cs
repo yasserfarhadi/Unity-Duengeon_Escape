@@ -10,11 +10,14 @@ public abstract class Enemy : MonoBehaviour
 	protected Transform target;
 	protected SpriteRenderer spriteRenderer;
 	protected Animator spriteAnimator;
+	protected Player player;
+	protected bool canMove = true;
 
 	public virtual void Init()
 	{
 		spriteRenderer = this.gameObject.GetComponentInChildren<SpriteRenderer>();
 		spriteAnimator = this.gameObject.GetComponentInChildren<Animator>();
+		player = GameObject.Find("Player").GetComponent<Player>();
 		target = pointB;
 	}
 
@@ -39,8 +42,8 @@ public abstract class Enemy : MonoBehaviour
 			spriteRenderer.flipX = false;
 
 		}
-		if (state.IsName("Idle")) return;
-		transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+		if (state.IsName("Idle") && spriteAnimator.GetBool("inCombat")) return;
+		if (canMove) transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 		if (Vector3.Distance(transform.position, target.position) < 0.1f)
 		{
 			if (target == pointA)
@@ -55,7 +58,18 @@ public abstract class Enemy : MonoBehaviour
 				target = pointA;
 			}
 
+			if (Vector3.Distance(transform.position, player.transform.position) > 2)
+			{
+				spriteAnimator.SetBool("inCombat", false);
+			}
 
 		}
 	}
+
+	public bool CanMove
+	{
+		get { return canMove; }
+		set { canMove = value; }
+	}
+
 }

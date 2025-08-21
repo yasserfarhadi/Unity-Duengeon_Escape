@@ -2,16 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attack : MonoBehaviour {
-
+public class Attack : MonoBehaviour
+{
+	private Animator _spriteAnimator;
+	private Player _player;
+	void Awake()
+	{
+		_spriteAnimator = GetComponentInParent<Animator>();
+		_player = GetComponentInParent<Player>();
+	}
 	void Start()
 	{
-		
-		Debug.Log("Attack");
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		Debug.Log("HIT " + other.name);
+		if (!_player.CanHit) return;
+		_player.CanHit = false;
+		IDamagable hit = other.GetComponent<IDamagable>();
+		if (hit != null) hit.Daamge();
 	}
 }

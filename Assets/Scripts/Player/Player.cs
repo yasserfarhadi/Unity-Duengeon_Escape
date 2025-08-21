@@ -18,7 +18,8 @@ public class Player : MonoBehaviour
 	private SpriteRenderer _spriteRenderer;
 	private GameObject _swordArc;
 	private bool _canMove = true;
-	private Vector3 _arcPos, _arcRot, _arcScale;
+	private bool _canHit = true;
+	private Vector3 _arcPos, _arcRot, _arcScale, _hitboxOffset;
 	void Start()
 	{
 		_rb = GetComponent<Rigidbody2D>();
@@ -75,6 +76,7 @@ public class Player : MonoBehaviour
 		if (move < 0)
 		{
 			_spriteRenderer.flipX = true;
+
 		}
 		else if (move > 0)
 		{
@@ -82,7 +84,7 @@ public class Player : MonoBehaviour
 		}
 	}
 	void FlipArc(float move)
-{
+	{
 		if (move < 0)
 		{
 			Vector3 mirroredPos = _arcPos;
@@ -98,18 +100,23 @@ public class Player : MonoBehaviour
 			_swordArc.transform.localPosition = mirroredPos;
 			_swordArc.transform.localEulerAngles = mirroredRot;
 			_swordArc.transform.localScale = mirrorScale;
-    }
+		}
 		else if (move > 0)
 		{
 			_swordArc.transform.localPosition = _arcPos;
 			_swordArc.transform.localEulerAngles = _arcRot;
 			_swordArc.transform.localScale = _arcScale;
 		}
-}
+	}
 
 	public bool CanMove
 	{
 		get { return _canMove; }
 		set { _canMove = value; }
+	}
+	public bool CanHit
+	{
+		get { return _canHit; }
+		set { _canHit = value; }
 	}
 }

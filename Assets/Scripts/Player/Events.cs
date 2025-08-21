@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Events : MonoBehaviour {
+public class Events : MonoBehaviour
+{
 
 	// Use this for initialization
 	private Player _playerScript;
-	void Start () {
+	void Start()
+	{
 		_playerScript = GetComponentInParent<Player>();
 	}
 
@@ -17,5 +19,11 @@ public class Events : MonoBehaviour {
 	public void OnAttackEnd()
 	{
 		_playerScript.CanMove = true;
+	}
+
+	public void ResetHit()
+	{
+		_playerScript.CanHit = true;
+		
 	}
 }
