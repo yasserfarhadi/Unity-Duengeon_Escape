@@ -11,7 +11,7 @@ public class Spider : Enemy, IDamagable
     {
         base.Init();
     }
-    public void Daamge(int damageAmount)
+    public void Damage(int damageAmount)
     {
         throw new System.NotImplementedException();
     }

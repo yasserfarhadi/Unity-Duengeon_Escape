@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
@@ -56,9 +57,9 @@ public abstract class Enemy : MonoBehaviour
 		{
 			if (target == pointA) target = pointB;
 			else target = pointA;
-			if(!inAttack) spriteAnimator.SetTrigger("idle");
+			if (!inAttack) spriteAnimator.SetTrigger("idle");
 		}
-		
+
 	}
 
 	public bool CanMove
@@ -66,5 +67,6 @@ public abstract class Enemy : MonoBehaviour
 		get { return canMove; }
 		set { canMove = value; }
 	}
+
 
 }

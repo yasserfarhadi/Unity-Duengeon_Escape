@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class Skeleton : Enemy, IDamagable
@@ -64,7 +65,7 @@ public class Skeleton : Enemy, IDamagable
     }
 
 
-    public void Daamge(int damageAmount)
+    public void Damage(int damageAmount)
     {
         Health--;
         spriteAnimator.SetTrigger("hit");

@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IDamagable
 {
 	int Health { get; set; }
-	void Daamge(int damageAmount = 1);
+	void Damage(int damageAmount = 1);
 }

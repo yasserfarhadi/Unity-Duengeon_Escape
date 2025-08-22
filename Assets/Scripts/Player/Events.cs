@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class Events : MonoBehaviour
@@ -24,6 +25,5 @@ public class Events : MonoBehaviour
 	public void ResetHit()
 	{
 		_playerScript.CanHit = true;
-		
 	}
 }

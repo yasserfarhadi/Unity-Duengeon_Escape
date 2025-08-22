@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 using UnityEngine.Tilemaps;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamagable
 {
 
 	[SerializeField] float jumpForce = 5f, _speed = 2.5f;
@@ -20,8 +21,10 @@ public class Player : MonoBehaviour
 	private bool _canMove = true;
 	private bool _canHit = true;
 	private Vector3 _arcPos, _arcRot, _arcScale, _hitboxOffset;
+	public int Health { get; set; }
 	void Start()
 	{
+		Health = 5;
 		_rb = GetComponent<Rigidbody2D>();
 		_playerAnimation = GetComponent<PlayerAnimation>();
 		_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -118,5 +121,16 @@ public class Player : MonoBehaviour
 	{
 		get { return _canHit; }
 		set { _canHit = value; }
+	}
+	public void Damage(int damageAmount)
+	{
+		Health--;
+		// spriteAnimator.SetTrigger("hit");
+		// spriteAnimator.SetBool("aggro", true);
+		// CanMove = false;
+		if (Health < 1)
+		{
+			Destroy(gameObject);
+		}
 	}
 }
