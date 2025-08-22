@@ -12,6 +12,7 @@ public abstract class Enemy : MonoBehaviour
 	protected Animator spriteAnimator;
 	protected Player player;
 	protected bool canMove = true;
+	protected bool isFacingPlayer = false;
 
 	public virtual void Init()
 	{
@@ -30,9 +31,8 @@ public abstract class Enemy : MonoBehaviour
 		Movement();
 	}
 
-	public virtual void Movement()
+	void FlipCheck(AnimatorStateInfo state)
 	{
-		AnimatorStateInfo state = spriteAnimator.GetCurrentAnimatorStateInfo(0);
 		if (target == pointA && !state.IsName("Idle"))
 		{
 			spriteRenderer.flipX = true;
@@ -42,28 +42,23 @@ public abstract class Enemy : MonoBehaviour
 			spriteRenderer.flipX = false;
 
 		}
-		if (state.IsName("Idle") && spriteAnimator.GetBool("inCombat")) return;
-		if (canMove) transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+	}
+
+	public virtual void Movement()
+	{
+		AnimatorStateInfo state = spriteAnimator.GetCurrentAnimatorStateInfo(0);
+		FlipCheck(state);
+		bool inAttack = state.IsName("Attack");
+
+		if (state.IsName("Idle")) return;
+		if (canMove && !inAttack) transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 		if (Vector3.Distance(transform.position, target.position) < 0.1f)
 		{
-			if (target == pointA)
-			{
-				target = pointB;
-				spriteAnimator.SetTrigger("idle");
-
-			}
-			else
-			{
-				spriteAnimator.SetTrigger("idle");
-				target = pointA;
-			}
-
-			if (Vector3.Distance(transform.position, player.transform.position) > 2)
-			{
-				spriteAnimator.SetBool("inCombat", false);
-			}
-
+			if (target == pointA) target = pointB;
+			else target = pointA;
+			if(!inAttack) spriteAnimator.SetTrigger("idle");
 		}
+		
 	}
 
 	public bool CanMove
