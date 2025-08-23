@@ -10,12 +10,15 @@ using UnityEngine.Tilemaps;
 public class Player : MonoBehaviour, IDamagable
 {
 
-	[SerializeField] float jumpForce = 5f, _speed = 2.5f;
+	private readonly float jumpForce = 5f;
+	private readonly float _speed = 2.5f;
 	public Transform groundCheck;
-	private float groundDistance = 0.1f;
+	private readonly float groundDistance = 0.1f;
 	[SerializeField] LayerMask groundLayer;
 	private Rigidbody2D _rb;
 	private PlayerAnimation _playerAnimation;
+	private Transform _sprite;
+	private Vector3 _spriteBaseOffset;
 	private SpriteRenderer _spriteRenderer;
 	private GameObject _swordArc;
 	private bool _canMove = true;
@@ -32,6 +35,8 @@ public class Player : MonoBehaviour, IDamagable
 		_arcPos = _swordArc.transform.localPosition;
 		_arcRot = _swordArc.transform.localEulerAngles;
 		_arcScale = _swordArc.transform.localScale;
+		_sprite = transform.Find("Sprite");
+		_spriteBaseOffset = _sprite.localPosition;
 	}
 
 	void Update()
@@ -79,11 +84,16 @@ public class Player : MonoBehaviour, IDamagable
 		if (move < 0)
 		{
 			_spriteRenderer.flipX = true;
-
+			_sprite.localPosition = new Vector3(
+			-Mathf.Abs(-0.2f),
+			_spriteBaseOffset.y,
+			_spriteBaseOffset.z
+		);
 		}
 		else if (move > 0)
 		{
 			_spriteRenderer.flipX = false;
+			_sprite.localPosition = _spriteBaseOffset;
 		}
 	}
 	void FlipArc(float move)

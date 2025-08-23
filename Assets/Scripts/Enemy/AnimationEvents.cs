@@ -1,16 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
-public class AnimationEvents : MonoBehaviour {
+public class AnimationEvents : MonoBehaviour
+{
 
-	private Enemy _enemy;
+	private Spider _sipder;
+
 	void Awake()
 	{
-		_enemy = GetComponentInParent<Enemy>();
+		_sipder = GetComponentInParent<Spider>();
 	}
 	public void ResetCanMove()
 	{
-		_enemy.CanMove = true;
+		_sipder.CanMove = true;
 	}
+
+	public void FireAcid()
+	{
+		_sipder.Attack();
+	}
+
 }
