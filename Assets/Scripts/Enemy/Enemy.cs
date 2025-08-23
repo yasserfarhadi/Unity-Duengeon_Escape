@@ -14,6 +14,7 @@ public abstract class Enemy : MonoBehaviour
 	protected Player player;
 	protected bool canMove = true;
 	protected bool isFacingPlayer = false;
+	protected bool isDead = false;
 
 	public virtual void Init()
 	{
@@ -29,7 +30,7 @@ public abstract class Enemy : MonoBehaviour
 	}
 	public virtual void Update()
 	{
-		Movement();
+		if (!isDead) Movement();
 	}
 
 	void FlipCheck(AnimatorStateInfo state)

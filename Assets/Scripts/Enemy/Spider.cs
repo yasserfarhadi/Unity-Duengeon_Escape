@@ -18,7 +18,9 @@ public class Spider : Enemy, IDamagable
         Health--;
         if (Health < 1)
         {
-            Destroy(gameObject);
+            // Destroy(gameObject);
+            isDead = true;
+            spriteAnimator.SetTrigger("death");
         }
     }
     public override void Update()

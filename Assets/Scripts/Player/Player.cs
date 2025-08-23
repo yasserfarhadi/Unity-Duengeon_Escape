@@ -140,7 +140,8 @@ public class Player : MonoBehaviour, IDamagable
 		// CanMove = false;
 		if (Health < 1)
 		{
-			Destroy(gameObject);
+			// Destroy(gameObject);
+			_playerAnimation.PlayerDeath();
 		}
 	}
 }

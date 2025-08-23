@@ -74,7 +74,9 @@ public class Moss_Giant : Enemy, IDamagable
         CanMove = false;
         if (Health < 1)
         {
-            Destroy(gameObject);
+            // Destroy(gameObject);
+            isDead = true;
+            spriteAnimator.SetTrigger("death");
         }
     }
 }

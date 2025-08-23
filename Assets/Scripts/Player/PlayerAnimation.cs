@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
@@ -37,6 +38,11 @@ public class PlayerAnimation : MonoBehaviour
 			_animator.SetTrigger("attack");
 			_swordArcAnimator.SetTrigger("arc");
 		}
+	}
+
+	public void PlayerDeath()
+	{
+		_animator.SetTrigger("death");
 	}
 }
 

@@ -73,7 +73,9 @@ public class Skeleton : Enemy, IDamagable
         CanMove = false;
         if (Health < 1)
         {
-            Destroy(gameObject);
+            // Destroy(gameObject);
+            spriteAnimator.SetTrigger("death");
+            isDead = true;
         }
     }
 }
