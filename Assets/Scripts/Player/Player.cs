@@ -10,7 +10,7 @@ using UnityEngine.Tilemaps;
 public class Player : MonoBehaviour, IDamagable
 {
 
-	private readonly float jumpForce = 5f;
+	private readonly float jumpForce = 6f;
 	private readonly float _speed = 2.5f;
 	public Transform groundCheck;
 	private readonly float groundDistance = 0.1f;
@@ -25,6 +25,9 @@ public class Player : MonoBehaviour, IDamagable
 	private bool _canHit = true;
 	private Vector3 _arcPos, _arcRot, _arcScale, _hitboxOffset;
 	public int Health { get; set; }
+	protected bool isDead = false;
+
+	[SerializeField] private int _diamonds = 0;
 	void Start()
 	{
 		Health = 5;
@@ -41,13 +44,14 @@ public class Player : MonoBehaviour, IDamagable
 
 	void Update()
 	{
+		if (isDead) return;
 		Movement();
 		Attack();
 	}
 
 	void Attack()
 	{
-		if (Input.GetMouseButtonDown(0) && IsGrounded()) _playerAnimation.Attack();
+		if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.L)) && IsGrounded()) _playerAnimation.Attack();
 	}
 	void Movement()
 	{
@@ -132,16 +136,28 @@ public class Player : MonoBehaviour, IDamagable
 		get { return _canHit; }
 		set { _canHit = value; }
 	}
+	public int Diamonds
+	{
+		get { return _diamonds; }
+		set { _diamonds = value; }
+	}
+	public bool IsPlayerDead()
+	{
+		return isDead;
+	}
 	public void Damage(int damageAmount)
 	{
+		if (isDead) return;
 		Health--;
 		// spriteAnimator.SetTrigger("hit");
 		// spriteAnimator.SetBool("aggro", true);
 		// CanMove = false;
 		if (Health < 1)
 		{
+			isDead = true;
 			// Destroy(gameObject);
 			_playerAnimation.PlayerDeath();
+			GetComponent<Rigidbody2D>().simulated = false;
 		}
 	}
 }

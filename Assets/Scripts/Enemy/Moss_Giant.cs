@@ -18,6 +18,7 @@ public class Moss_Giant : Enemy, IDamagable
     public override void Movement()
     {
         base.Movement();
+        if (player.IsPlayerDead()) return;
         AnimatorStateInfo state = spriteAnimator.GetCurrentAnimatorStateInfo(0);
         bool isInAttack = state.IsName("Attack");
         bool isInHit = state.IsName("Hit");
@@ -68,6 +69,7 @@ public class Moss_Giant : Enemy, IDamagable
 
     public void Damage(int damageAmount)
     {
+        if (isDead) return;
         Health--;
         spriteAnimator.SetTrigger("hit");
         spriteAnimator.SetBool("aggro", true);
@@ -77,6 +79,9 @@ public class Moss_Giant : Enemy, IDamagable
             // Destroy(gameObject);
             isDead = true;
             spriteAnimator.SetTrigger("death");
+            InstanciateDiamonds();
         }
     }
+
+
 }

@@ -15,6 +15,7 @@ public abstract class Enemy : MonoBehaviour
 	protected bool canMove = true;
 	protected bool isFacingPlayer = false;
 	protected bool isDead = false;
+	[SerializeField] protected GameObject _gemPrefab;
 
 	public virtual void Init()
 	{
@@ -69,5 +70,11 @@ public abstract class Enemy : MonoBehaviour
 		set { canMove = value; }
 	}
 
+	public void InstanciateDiamonds()
+	{
+		GameObject newDiamond = Instantiate(_gemPrefab, transform.position, Quaternion.identity);
+		Diamond _diamond = newDiamond.GetComponent<Diamond>();
+		_diamond.GemCount = gems;
+	}
 
 }

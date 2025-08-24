@@ -15,12 +15,14 @@ public class Spider : Enemy, IDamagable
     }
     public void Damage(int damageAmount)
     {
+        if (isDead) return;
         Health--;
         if (Health < 1)
         {
             // Destroy(gameObject);
             isDead = true;
             spriteAnimator.SetTrigger("death");
+            InstanciateDiamonds();
         }
     }
     public override void Update()

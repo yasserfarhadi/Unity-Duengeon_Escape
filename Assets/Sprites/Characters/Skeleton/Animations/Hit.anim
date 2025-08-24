@@ -151,7 +151,7 @@ AnimationClip:
   m_GenerateMotionCurves: 0
   m_Events:
   - time: 1.1
-    functionName: ResetCanMove
+    functionName: SkeletonResetMovement
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
