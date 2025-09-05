@@ -22,7 +22,19 @@ public class UIManager : MonoBehaviour
 
 	public void OpenShop(int gemCount)
 	{
+		UpdateGemCount(gemCount);
+	}
+
+	public void UpdateGemCount(int gemCount)
+	{
 		_gemText.text = gemCount + " Gem" + (gemCount == 1 ? "" : "s");
+	}
+
+
+
+	public void UpdateShopSelection(int yPos)
+	{
+		_selectionImg.rectTransform.anchoredPosition = new Vector2(_selectionImg.rectTransform.anchoredPosition.x, (-yPos * 100) + 65);
 	}
 
 	private void Awake()
