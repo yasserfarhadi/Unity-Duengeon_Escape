@@ -16,6 +16,7 @@ public class Diamond : MonoBehaviour
 			{
 				_player.Diamonds += _count;
 				Destroy(gameObject);
+				UIManager.Instance.UpdateGemCount(_player.Diamonds);
 			}
 		}
 	}

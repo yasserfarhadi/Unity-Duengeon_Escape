@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 using UnityEngine.Tilemaps;
 
+using UnityStandardAssets.CrossPlatformInput;
+
 public class Player : MonoBehaviour, IDamagable
 {
 
@@ -30,7 +32,7 @@ public class Player : MonoBehaviour, IDamagable
 	[SerializeField] private int _diamonds = 0;
 	void Start()
 	{
-		Health = 5;
+		Health = 4;
 		_rb = GetComponent<Rigidbody2D>();
 		_playerAnimation = GetComponent<PlayerAnimation>();
 		_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour, IDamagable
 		_arcScale = _swordArc.transform.localScale;
 		_sprite = transform.Find("Sprite");
 		_spriteBaseOffset = _sprite.localPosition;
+		UIManager.Instance.UpdateGemCount(Diamonds);
 	}
 
 	void Update()
@@ -51,11 +54,11 @@ public class Player : MonoBehaviour, IDamagable
 
 	void Attack()
 	{
-		if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.L)) && IsGrounded()) _playerAnimation.Attack();
+		if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.L) || CrossPlatformInputManager.GetButtonDown("Attack")) && IsGrounded()) _playerAnimation.Attack();
 	}
 	void Movement()
 	{
-		float moveX = Input.GetAxisRaw("Horizontal");
+		float moveX = CrossPlatformInputManager.GetAxisRaw("Horizontal"); //Input.GetAxisRaw("Horizontal");
 		Flip(moveX);
 		FlipArc(moveX);
 		Vector2 move = new Vector2((_canMove ? moveX : 0) * _speed, _rb.velocity.y);
@@ -63,7 +66,7 @@ public class Player : MonoBehaviour, IDamagable
 		_playerAnimation.Move(moveX);
 		bool _isGrounded = IsGrounded();
 
-		if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
+		if ((Input.GetKeyDown(KeyCode.Space) || CrossPlatformInputManager.GetButtonDown("Jump")) && _isGrounded)
 		{
 			_rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
 			_playerAnimation.JumpStart();
@@ -149,9 +152,11 @@ public class Player : MonoBehaviour, IDamagable
 	{
 		if (isDead) return;
 		Health--;
+
 		// spriteAnimator.SetTrigger("hit");
 		// spriteAnimator.SetBool("aggro", true);
 		// CanMove = false;
+		UIManager.Instance.UpdateLives(Health);
 		if (Health < 1)
 		{
 			isDead = true;

@@ -16,8 +16,9 @@ public class UIManager : MonoBehaviour
 		}
 	}
 
-	[SerializeField] Text _gemText;
+	[SerializeField] Text _gemText, _gemCount;
 	[SerializeField] Image _selectionImg;
+	[SerializeField] Image[] _lives;
 	// private Player _player;
 
 	public void OpenShop(int gemCount)
@@ -28,6 +29,18 @@ public class UIManager : MonoBehaviour
 	public void UpdateGemCount(int gemCount)
 	{
 		_gemText.text = gemCount + " Gem" + (gemCount == 1 ? "" : "s");
+		_gemCount.text = gemCount.ToString();
+	}
+
+	public void UpdateLives(int liveCount)
+	{
+		for (int i = 0; i < _lives.Length; i++)
+		{
+			if (i >= liveCount)
+			{
+				_lives[i].gameObject.SetActive(false);
+			}
+		}
 	}
 
 
